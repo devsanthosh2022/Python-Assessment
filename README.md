@@ -26,15 +26,16 @@ The justify_paragraph function:
   -  Returns an array of justified lines.
 
 ## Example
+Given 
 paragraph = "This is a sample text but a complicated problem to be solved, so we are adding more text to see that it actually works."
 page_width = 20
 
 the output might be:
 
-Array[1] = 'This   is  a  sample'
-Array[2] = 'text      but      a'
-Array[3] = 'complicated  problem'
-Array[4] = 'to  be solved, so we'
-Array[5] = 'are adding more text'
-Array[6] = 'to   see   that   it'
-Array[7] = 'actually      works.'
+Line 1: This   is  a  sample
+Line 2: text      but      a
+Line 3: complicated  problem
+Line 4: to  be solved, so we
+Line 5: are adding more text
+Line 6: to   see   that   it
+Line 7: actually      works.
