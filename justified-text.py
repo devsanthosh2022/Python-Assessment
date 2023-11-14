@@ -1,52 +1,74 @@
 def justify_paragraph(paragraph, page_width):
-    words = paragraph.split()
-    lines = []
-    current_line = []
-    current_length = 0
+    try:
+        # Convert page width to an integer
+        page_width = int(page_width)
 
-    for word in words:
-        word_length = len(word)
-        if current_length + len(current_line) + word_length <= page_width:
-            current_line.append(word)
-            current_length += word_length
-        else:
+        # Check if the page width is a positive integer
+        if page_width <= 0:
+            raise ValueError("Page width must be a positive integer.")
+
+        # Split the paragraph into words
+        words = paragraph.split()
+        lines = []
+        current_line = []
+        current_length = 0
+
+        # Step 1: Organize words into lines that fit within the specified width
+        for word in words:
+            word_length = len(word)
+            if current_length + len(current_line) + word_length <= page_width:
+                # Add the word to the current line if it fits
+                current_line.append(word)
+                current_length += word_length
+            else:
+                # Start a new line when the current line exceeds the width
+                lines.append(current_line)
+                current_line = [word]
+                current_length = word_length
+
+        if current_line:
             lines.append(current_line)
-            current_line = [word]
-            current_length = word_length
 
-    if current_line:
-        lines.append(current_line)
+        justified = []
 
-    # making the text left and right justified
-    justified = []
-    for line in lines:
-        if len(line) > 1:
-            num_spaces = page_width - sum(len(word) for word in line)
-            num_gaps = len(line) - 1
-            spaces_between_words = num_spaces // num_gaps
-            extra_spaces = num_spaces % num_gaps
+        # Step 2: Justify each line to evenly distribute spaces between words
+        for line in lines:
+            if len(line) > 1:  # If there's more than one word in the line
+                total_length = sum(len(word) for word in line)
+                total_spaces = page_width - total_length
 
-            justified_line = ""
-            for i, word in enumerate(line):
-                justified_line += word
-                if i < num_gaps:
-                    spaces_to_add = spaces_between_words + (1 if i < extra_spaces else 0)
-                    justified_line += ' ' * spaces_to_add
+                num_spaces = len(line) - 1
+                spaces_between_words = total_spaces // num_spaces
+                extra_spaces = total_spaces % num_spaces
 
-            justified.append(justified_line)
-        else:
-            justified.append(line[0].ljust(page_width))
+                justified_line = ""
+                for i, word in enumerate(line):
+                    justified_line += word
+                    if i < num_spaces:
+                        # Distribute spaces evenly between words
+                        spaces_to_add = spaces_between_words + (1 if i < extra_spaces else 0)
+                        justified_line += ' ' * spaces_to_add
 
-    return justified
+                justified.append(justified_line)
+            else:
+                # If there's only one word in the line, left-justify it
+                justified.append(line[0].ljust(page_width))
 
-# Input the paragraph and the page width
-paragraph = "This is a sample text but a complicated problem to be solved, so we are adding more text to see that it actually works."
-page_width = 20
+        return justified
 
-# Justify and store in an array
-array = justify_paragraph(paragraph, page_width)
+    except ValueError as e:
+        # Handle invalid page width input
+        print(f"Error: {e}")
+        return None
 
-# Print the array
-print("Justified Text Array:")
-for i, line in enumerate(array, 1):
-    print(f"Array[{i}] = '{line}'")
+if __name__ == "__main__":
+    # User input: paragraph and page width
+    paragraph_input = input("Enter the paragraph: ")
+    page_width_input = input("Enter the page width: ")
+
+    justified_text = justify_paragraph(paragraph_input, page_width_input)
+
+    if justified_text is not None:
+        print("\nJustified Text:")
+        for i, line in enumerate(justified_text, 1):
+            print(f"Line {i}: {line}")
