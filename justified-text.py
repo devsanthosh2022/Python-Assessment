@@ -5,14 +5,20 @@ def justify_paragraph(paragraph, page_width):
             # Attempt to convert page width to an integer
             page_width = int(page_width)
         except ValueError:
-        
-        print("Error: Page width must be a valid integer.")
-        return None
+            print("Error: Page width must be a valid integer.")
+            return None
 
 
         # Check if the page width is a positive integer
-        if page_width <= 0:
+        if page_width < 0:
             raise ValueError("Page width must be a positive integer.")
+        elif page_width == 0:
+            raise ValueError("Page width cannot be zero.")
+        
+        # Check if the paragraph is empty
+        if not paragraph:
+            print("Error: Paragraph cannot be empty.")
+            return None
 
         # Split the paragraph into words
         words = paragraph.split()
