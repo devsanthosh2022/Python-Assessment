@@ -18,9 +18,9 @@ def justify_paragraph(paragraph, page_width):
             print("Error: Paragraph cannot be empty.")
             return None
 
-        # Check if the paragraph contains very long words
-        if any(len(word) > page_width for word in paragraph.split()):
-            raise ValueError("Paragraph contains very long words that cannot fit within the specified page width.")
+        # Check if the paragraph contains special characters
+        if any(not word.isalnum() for word in paragraph.split()):
+            raise ValueError("Paragraph contains special characters that are not allowed.")
 
         # Split the paragraph into words
         words = paragraph.split()
